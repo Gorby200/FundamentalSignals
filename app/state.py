@@ -15,19 +15,24 @@ import threading
 from collections import deque
 from typing import Any, Dict
 
+from app import config as app_config
+
 
 class AppState:
     def __init__(self):
-        self.news_articles: deque = deque(maxlen=200)
+        news_queue_size = app_config.get("feeds.news_queue_size", 200)
+        signals_queue_size = app_config.get("signals.signals_queue_size", 50)
+
+        self.news_articles: deque = deque(maxlen=news_queue_size)
 
         # Flat list of all active signals (tier A from ORACLE + deterministic fallbacks)
         # Used for backward-compatible broadcast. Tier B/C live in oracle_meta.
-        self.active_signals: deque = deque(maxlen=50)
+        self.active_signals: deque = deque(maxlen=signals_queue_size)
 
         self.price_cache: Dict[str, Any] = {}
         self.websocket_clients: set = set()
         self.seen_news_slugs: set = set()
-        self.recent_signal_keys: deque = deque(maxlen=200)
+        self.recent_signal_keys: deque = deque(maxlen=news_queue_size)
 
         self.stats: Dict[str, Any] = {
             "articles_processed": 0,

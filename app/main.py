@@ -150,6 +150,7 @@ async def deterministic_signal_loop():
     from app import config as app_config
 
     interval = app_config.get("signals.generation_interval_sec", 30)
+    signals_limit = app_config.get("signals.signals_queue_size", 50)
     logger.info(f"Deterministic signal loop started (interval: {interval}s)")
 
     await asyncio.sleep(10)
@@ -172,7 +173,7 @@ async def deterministic_signal_loop():
                         if s.get("source") in ("oracle_enhanced", "oracle")
                     ]
                     app_state.active_signals.clear()
-                    for signal in signals[:50]:
+                    for signal in signals[:signals_limit]:
                         signal["timestamp"] = datetime.now().isoformat()
                         app_state.active_signals.appendleft(signal)
                     for osig in oracle_signals:
@@ -206,6 +207,7 @@ async def oracle_signal_loop():
 
     interval = app_config.get("signals.oracle_interval_sec", 600)
     initial_wait = app_config.get("oracle.initial_wait_sec", 30)
+    signals_limit = app_config.get("signals.signals_queue_size", 50)
     logger.info(f"ORACLE signal loop started (interval: {interval}s, initial_wait: {initial_wait}s)")
 
     await asyncio.sleep(initial_wait)
@@ -225,7 +227,7 @@ async def oracle_signal_loop():
 
                 with app_state.lock:
                     app_state.active_signals.clear()
-                    for signal in merged[:50]:
+                    for signal in merged[:signals_limit]:
                         signal["timestamp"] = datetime.now().isoformat()
                         app_state.active_signals.appendleft(signal)
 
@@ -282,6 +284,8 @@ async def broadcast_loop():
     from app import config as app_config
 
     interval = app_config.get("signals.broadcast_interval_sec", 5)
+    news_limit = app_config.get("feeds.news_queue_size", 200)
+    signals_limit = app_config.get("signals.signals_queue_size", 50)
     logger.info(f"Broadcast loop started (interval: {interval}s)")
 
     await asyncio.sleep(5)
@@ -304,8 +308,8 @@ async def broadcast_loop():
 
             payload = {
                 "type": "full_state",
-                "news": list(app_state.news_articles)[:50],
-                "signals": list(app_state.active_signals)[:30],
+                "news": list(app_state.news_articles)[:news_limit],
+                "signals": list(app_state.active_signals)[:signals_limit],
                 "prices": prices,
                 "stats": app_state.stats,
                 "oracle_meta": app_state.oracle_meta,
@@ -385,6 +389,11 @@ async def health():
 @app.get("/api/state")
 async def get_state():
     """Full state REST endpoint for debugging and external consumers."""
+    from app import config as app_config
+
+    news_limit = app_config.get("feeds.news_queue_size", 200)
+    signals_limit = app_config.get("signals.signals_queue_size", 50)
+
     prices = {}
     for ticker, data in app_state.price_cache.items():
         prices[ticker] = {
@@ -395,8 +404,8 @@ async def get_state():
 
     return JSONResponse({
         "type": "full_state",
-        "news": list(app_state.news_articles)[:50],
-        "signals": list(app_state.active_signals)[:30],
+        "news": list(app_state.news_articles)[:news_limit],
+        "signals": list(app_state.active_signals)[:signals_limit],
         "prices": prices,
         "stats": app_state.stats,
         "oracle_meta": app_state.oracle_meta,

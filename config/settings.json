@@ -24,14 +24,16 @@
     "rss_poll_interval_sec": 600,
     "rss_timeout_sec": 20,
     "max_articles_per_feed": 15,
-    "article_max_age_hours": 4
+    "article_max_age_hours": 4,
+    "news_queue_size": 200
   },
   "signals": {
     "generation_interval_sec": 30,
     "oracle_interval_sec": 300,
     "broadcast_interval_sec": 5,
     "max_active_signals": 50,
-    "dedup_window_min": 30
+    "dedup_window_min": 30,
+    "signals_queue_size": 50
   },
   "deterministic": {
     "news_weight": 0.40,
@@ -75,6 +77,7 @@
     "symbols": ["btcusdt", "ethusdt", "bnbusdt", "solusdt", "xrpusdt", "adausdt", "dogeusdt", "ltcusdt"],
     "ping_interval": 20,
     "ping_timeout": 10,
-    "reconnect_backoff_max": 30
+    "reconnect_backoff_max": 30,
+    "price_history_size": 500
   }
 }

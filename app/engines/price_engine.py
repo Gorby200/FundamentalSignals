@@ -23,6 +23,8 @@ from typing import Dict, Any
 
 import numpy as np
 
+from app import config as app_config
+
 logger = logging.getLogger("fundamentalsignals.price")
 
 BINANCE_SYMBOLS = {
@@ -89,8 +91,9 @@ async def binance_websocket_loop(price_cache: Dict, max_retries: int = 100):
                                 }
 
                             price_cache[our_ticker]["prices"].append(price)
-                            if len(price_cache[our_ticker]["prices"]) > 500:
-                                price_cache[our_ticker]["prices"] = price_cache[our_ticker]["prices"][-500:]
+                            max_history = app_config.get("binance.price_history_size", 500)
+                            if len(price_cache[our_ticker]["prices"]) > max_history:
+                                price_cache[our_ticker]["prices"] = price_cache[our_ticker]["prices"][-max_history:]
 
                             price_cache[our_ticker].update({
                                 "current": price,
