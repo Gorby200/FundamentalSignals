@@ -1,0 +1,80 @@
+{
+  "zai": {
+    "api_key": "3c466fd16eb346a1a9feaa9c78569cb5.DYKlYfua8MXC7DTP",
+    "base_url": "https://api.z.ai/api/coding/paas/v4",
+    "model": "glm-4.5-air",
+    "max_tokens": 32768,
+    "temperature": 0.6,
+    "timeout": 300
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8000,
+    "cors_origins": ["*"]
+  },
+  "logging": {
+    "level": "INFO",
+    "log_to_file": true,
+    "log_to_console": true,
+    "llm_feed_enabled": true,
+    "max_file_size_mb": 10,
+    "backup_count": 5
+  },
+  "feeds": {
+    "rss_poll_interval_sec": 600,
+    "rss_timeout_sec": 20,
+    "max_articles_per_feed": 15,
+    "article_max_age_hours": 4
+  },
+  "signals": {
+    "generation_interval_sec": 30,
+    "oracle_interval_sec": 300,
+    "broadcast_interval_sec": 5,
+    "max_active_signals": 50,
+    "dedup_window_min": 30
+  },
+  "deterministic": {
+    "news_weight": 0.40,
+    "technical_weight": 0.60,
+    "commodity_correlation_weight": 0.25,
+    "signal_threshold": 1.5,
+    "sentiment_threshold": 0.15,
+    "ta_score_threshold": 0.15,
+    "ta_confidence_multiplier": 0.70,
+    "news_confidence_multiplier": 0.65,
+    "news_confidence_base": 0.15,
+    "news_confidence_cap": 0.80,
+    "commodity_confidence_multiplier": 0.60,
+    "commodity_confidence_base": 0.15,
+    "commodity_confidence_cap": 0.75,
+    "equity_confidence_multiplier": 0.50,
+    "equity_confidence_base": 0.15,
+    "equity_confidence_cap": 0.70,
+    "atr_sl_multiplier": 1.5,
+    "atr_tp_multiplier": 2.5,
+    "max_deterministic_signals": 30
+  },
+  "oracle": {
+    "initial_wait_sec": 30,
+    "llm_weight": 0.35,
+    "batch_size_articles": 20,
+    "batch_size_commodity_lookup": 5,
+    "consensus_boost": 1.15,
+    "max_merged_confidence": 0.87,
+    "tier_a_threshold": 0.55,
+    "tier_b_threshold": 0.40,
+    "unprocessed_reset_threshold": 5,
+    "article_hash_fields": ["title", "source"]
+  },
+  "commodities": {
+    "scrape_interval_sec": 300,
+    "correlation_decay": 0.85,
+    "min_correlation": 0.30
+  },
+  "binance": {
+    "symbols": ["btcusdt", "ethusdt", "bnbusdt", "solusdt", "xrpusdt", "adausdt", "dogeusdt", "ltcusdt"],
+    "ping_interval": 20,
+    "ping_timeout": 10,
+    "reconnect_backoff_max": 30
+  }
+}

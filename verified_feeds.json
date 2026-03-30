@@ -1,0 +1,488 @@
+[
+  {
+    "url": "http://www.dw.com",
+    "rss": "http://rss.dw.com/xml/rss-en-all",
+    "entries": 136,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.dailymail.co.uk",
+    "rss": "http://www.dailymail.co.uk/articles.rss",
+    "entries": 118,
+    "category": "markets"
+  },
+  {
+    "url": "http://chinadaily.com.cn",
+    "rss": "http://www.chinadaily.com.cn/rss/world_rss.xml",
+    "entries": 100,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.rt.com",
+    "rss": "https://www.rt.com/rss/",
+    "entries": 100,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.independent.co.uk",
+    "rss": "http://www.independent.co.uk/rss",
+    "entries": 100,
+    "category": "markets"
+  },
+  {
+    "url": "http://mashable.com",
+    "rss": "http://feeds.mashable.com/Mashable",
+    "entries": 100,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.banklesstimes.com",
+    "rss": "https://www.banklesstimes.com/feed/",
+    "entries": 100,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.androidauthority.com",
+    "rss": "https://www.androidauthority.com/feed/",
+    "entries": 80,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.latimes.com",
+    "rss": "http://www.latimes.com/rss2.0.xml",
+    "entries": 70,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.cnn.com",
+    "rss": "http://rss.cnn.com/rss/cnn_topstories.rss",
+    "entries": 69,
+    "category": "markets"
+  },
+  {
+    "url": "https://cointelegraph.com",
+    "rss": "https://cointelegraph.com/feed",
+    "entries": 60,
+    "category": "crypto"
+  },
+  {
+    "url": "http://drudgereport.com",
+    "rss": "http://feeds.feedburner.com/DrudgeReportFeed",
+    "entries": 53,
+    "category": "markets"
+  },
+  {
+    "url": "http://globaltimes.cn",
+    "rss": "http://www.globaltimes.cn/rss/outbrain.xml",
+    "entries": 50,
+    "category": "markets"
+  },
+  {
+    "url": "http://news.yahoo.com",
+    "rss": "http://news.yahoo.com/rss",
+    "entries": 50,
+    "category": "markets"
+  },
+  {
+    "url": "https://economictimes.indiatimes.com",
+    "rss": "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
+    "entries": 50,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.businessinsider.com",
+    "rss": "http://feeds2.feedburner.com/businessinsider",
+    "entries": 50,
+    "category": "markets"
+  },
+  {
+    "url": "https://asia.nikkei.com",
+    "rss": "https://asia.nikkei.com/rss/feed/nar",
+    "entries": 50,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.scmp.com",
+    "rss": "http://www.scmp.com/rss/91/feed",
+    "entries": 50,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.inverse.com",
+    "rss": "https://www.inverse.com/feed/articles/1.rss",
+    "entries": 50,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.bbc.com",
+    "rss": "http://feeds.bbci.co.uk/news/rss.xml",
+    "entries": 36,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.cnbc.com",
+    "rss": "https://www.cnbc.com/id/100003114/device/rss/rss.html",
+    "entries": 30,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.thesun.co.uk",
+    "rss": "https://www.thesun.co.uk/feed/",
+    "entries": 30,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.cbsnews.com",
+    "rss": "https://www.cbsnews.com/latest/rss/main",
+    "entries": 30,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.vanityfair.com",
+    "rss": "https://www.vanityfair.com/feed/rss",
+    "entries": 30,
+    "category": "markets"
+  },
+  {
+    "url": "https://boingboing.net",
+    "rss": "https://boingboing.net/feed",
+    "entries": 30,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.which.co.uk",
+    "rss": "https://www.which.co.uk/news/feed/",
+    "entries": 30,
+    "category": "markets"
+  },
+  {
+    "url": "https://theatlantic.com",
+    "rss": "https://www.theatlantic.com/feed/all/",
+    "entries": 25,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.foxnews.com",
+    "rss": "http://feeds.foxnews.com/foxnews/latest",
+    "entries": 25,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.nbcnews.com",
+    "rss": "http://feeds.nbcnews.com/feeds/topstories",
+    "entries": 25,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.abcnews.go.com",
+    "rss": "http://abcnews.go.com/abcnews/topstories",
+    "entries": 25,
+    "category": "markets"
+  },
+  {
+    "url": "http://time.com",
+    "rss": "http://time.com/feed/",
+    "entries": 25,
+    "category": "markets"
+  },
+  {
+    "url": "http://abcnews.go.com",
+    "rss": "http://feeds.abcnews.com/abcnews/topstories",
+    "entries": 25,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.coindesk.com",
+    "rss": "https://feeds.feedburner.com/CoinDesk",
+    "entries": 25,
+    "category": "crypto"
+  },
+  {
+    "url": "http://money.cnn.com",
+    "rss": "http://rss.cnn.com/rss/money_topstories.rss",
+    "entries": 20,
+    "category": "markets"
+  },
+  {
+    "url": "http://cbc.ca/news/",
+    "rss": "http://www.cbc.ca/cmlink/1.1244475",
+    "entries": 20,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.theguardian.com",
+    "rss": "https://www.theguardian.com/business/economics/rss",
+    "entries": 20,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.ndtv.com",
+    "rss": "https://feeds.feedburner.com/NDTV-LatestNews",
+    "entries": 20,
+    "category": "markets"
+  },
+  {
+    "url": "https://gizmodo.com",
+    "rss": "https://gizmodo.com/rss",
+    "entries": 20,
+    "category": "markets"
+  },
+  {
+    "url": "https://nypost.com",
+    "rss": "https://nypost.com/feed/",
+    "entries": 20,
+    "category": "markets"
+  },
+  {
+    "url": "https://arstechnica.com",
+    "rss": "http://feeds.arstechnica.com/arstechnica/index/",
+    "entries": 20,
+    "category": "markets"
+  },
+  {
+    "url": "https://wccftech.com",
+    "rss": "https://wccftech.com/feed/",
+    "entries": 20,
+    "category": "markets"
+  },
+  {
+    "url": "https://99bitcoins.com",
+    "rss": "https://99bitcoins.com/feed/",
+    "entries": 20,
+    "category": "crypto"
+  },
+  {
+    "url": "http://abc13.com",
+    "rss": "http://abc13.com/feed/",
+    "entries": 20,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.sci-news.com",
+    "rss": "http://www.sci-news.com/feed",
+    "entries": 20,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.fastcompany.com",
+    "rss": "https://feeds.feedburner.com/fastcompany/headlines",
+    "entries": 19,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.nytimes.com",
+    "rss": "http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+    "entries": 17,
+    "category": "markets"
+  },
+  {
+    "url": "http://thehill.com",
+    "rss": "http://thehill.com/rss/syndicator/19110",
+    "entries": 15,
+    "category": "markets"
+  },
+  {
+    "url": "https://chron.com",
+    "rss": "https://www.chron.com/rss/feed/News-270.php",
+    "entries": 15,
+    "category": "markets"
+  },
+  {
+    "url": "https://sfgate.com",
+    "rss": "https://www.sfgate.com/rss/feed/Business-and-Technology-News-448.php",
+    "entries": 15,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.ft.com",
+    "rss": "https://www.ft.com/?format=rss",
+    "entries": 12,
+    "category": "markets"
+  },
+  {
+    "url": "https://variety.com",
+    "rss": "http://variety.com/feed/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.investing.com",
+    "rss": "https://www.investing.com/rss/news.rss",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.express.co.uk",
+    "rss": "http://feeds.feedburner.com/daily-express-personal-finance-news",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.marketwatch.com",
+    "rss": "http://feeds.marketwatch.com/marketwatch/topstories/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.entrepreneur.com",
+    "rss": "https://www.entrepreneur.com/latest.rss",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "http://fortune.com",
+    "rss": "http://fortune.com/feed/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://news.bitcoin.com",
+    "rss": "https://news.bitcoin.com/feed/",
+    "entries": 10,
+    "category": "crypto"
+  },
+  {
+    "url": "https://thenextweb.com",
+    "rss": "http://feeds2.feedburner.com/thenextweb",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.technologyreview.com",
+    "rss": "https://www.technologyreview.com/stories.rss",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://themerkle.com",
+    "rss": "https://themerkle.com/feed/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.newsbtc.com",
+    "rss": "http://www.newsbtc.com/feed/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "http://business.financialpost.com",
+    "rss": "http://business.financialpost.com/feed",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "http://vancouversun.com",
+    "rss": "http://vancouversun.com/feed",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://bitcoinmagazine.com",
+    "rss": "https://bitcoinmagazine.com/feed",
+    "entries": 10,
+    "category": "crypto"
+  },
+  {
+    "url": "http://www.valuewalk.com",
+    "rss": "http://www.valuewalk.com/feed/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.moneyweb.co.za",
+    "rss": "https://www.moneyweb.co.za/feed",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.roanoke.com",
+    "rss": "http://www.roanoke.com/search/?f=rss&amp;t=article&amp;l=50&amp;s=start_time&amp;sd=desc&amp;k[]=%23topstory",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://coincentral.com",
+    "rss": "https://coincentral.com/feed/",
+    "entries": 10,
+    "category": "crypto"
+  },
+  {
+    "url": "https://www.coinspeaker.com",
+    "rss": "https://www.coinspeaker.com/feed/",
+    "entries": 10,
+    "category": "crypto"
+  },
+  {
+    "url": "http://reneweconomy.com.au",
+    "rss": "http://reneweconomy.com.au/feed/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.smartcompany.com.au",
+    "rss": "https://www.smartcompany.com.au/feed/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://www.eastbayexpress.com",
+    "rss": "https://www.eastbayexpress.com/oakland/Rss.xml",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.lowkickmma.com",
+    "rss": "http://www.lowkickmma.com/comments/feed/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://nichehunt.com",
+    "rss": "https://nichehunt.com/feed/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.forexnewsnow.com",
+    "rss": "http://www.binaryoptionsnow.com/feed/",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://utahherald.com",
+    "rss": "https://utahherald.com/feed",
+    "entries": 10,
+    "category": "markets"
+  },
+  {
+    "url": "https://cryptoslate.com",
+    "rss": "https://cryptoslate.com/feed/",
+    "entries": 10,
+    "category": "crypto"
+  },
+  {
+    "url": "http://www.livebitcoinnews.com",
+    "rss": "http://www.livebitcoinnews.com/feed",
+    "entries": 9,
+    "category": "crypto"
+  },
+  {
+    "url": "https://stocknewsjournal.com",
+    "rss": "https://stocknewsjournal.com/feed/",
+    "entries": 8,
+    "category": "markets"
+  },
+  {
+    "url": "https://seekingalpha.com",
+    "rss": "https://seekingalpha.com/market_currents.xml",
+    "entries": 7,
+    "category": "markets"
+  },
+  {
+    "url": "http://www.washingtonpost.com",
+    "rss": "http://feeds.washingtonpost.com/rss/business",
+    "entries": 2,
+    "category": "markets"
+  }
+]
