@@ -101,7 +101,10 @@ async def initial_rss_fetch():
     """Non-blocking initial RSS fetch so the dashboard has data on load."""
     try:
         logger.info("Initial RSS fetch starting (non-blocking)...")
-        articles = await poll_all_feeds(app_state.seen_news_slugs)
+        articles = await poll_all_feeds(
+            app_state.seen_news_slugs,
+            discovered_tickers=app_state.discovered_tickers,
+        )
         for article in articles:
             app_state.news_articles.appendleft(article)
         app_state.stats["rss_polls"] += 1
@@ -120,7 +123,10 @@ async def rss_polling_loop():
     while True:
         try:
             await asyncio.sleep(interval)
-            articles = await poll_all_feeds(app_state.seen_news_slugs)
+            articles = await poll_all_feeds(
+                app_state.seen_news_slugs,
+                discovered_tickers=app_state.discovered_tickers,
+            )
             for article in articles:
                 app_state.news_articles.appendleft(article)
             app_state.stats["rss_polls"] += 1

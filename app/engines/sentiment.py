@@ -260,9 +260,17 @@ BEARISH_PHRASES = {
 }
 
 
-def extract_tickers(text: str) -> List[Dict[str, str]]:
+def extract_tickers(text: str, discovered_tickers: Dict[str, Any] = None) -> List[Dict[str, str]]:
     """
     Scan text for financial entity keywords and return matched tickers.
+
+    Two-phase extraction:
+      Phase 1: Static keyword matching via TICKER_MAP (fast, deterministic, ~200 entries)
+      Phase 2: Dynamic matching via discovered_tickers (runtime, populated by ORACLE LLM)
+
+    The dynamic map allows the deterministic layer to recognize instruments that
+    ORACLE discovered in previous cycles — creating a feedback loop where LLM
+    intelligence improves the fast deterministic pipeline.
 
     Uses word-boundary regex matching to prevent false positives:
       - "btc" matches "buy btc now" but NOT "subtle"
@@ -270,7 +278,7 @@ def extract_tickers(text: str) -> List[Dict[str, str]]:
       - "gold" matches "gold prices" but NOT "golden"
 
     Returns a list of dicts: [{"ticker": "BTC-USD", "type": "crypto", "name": "Bitcoin"}, ...]
-    Deduplicates by ticker (first match wins, which is the longest keyword match).
+    Deduplicates by ticker (first match wins).
     """
     text_lower = text.lower()
     seen_tickers = set()
@@ -282,7 +290,29 @@ def extract_tickers(text: str) -> List[Dict[str, str]]:
             seen_tickers.add(ticker)
             results.append({"ticker": ticker, "type": asset_type, "name": name})
 
-    return results[:5]
+    if discovered_tickers:
+        for ticker, info in discovered_tickers.items():
+            if ticker in seen_tickers:
+                continue
+            ticker_lower = ticker.lower().replace("-", " ").replace("_", " ")
+            name_lower = info.get("name", "").lower()
+            search_text = text_lower
+            matched = False
+
+            if ticker_lower in search_text:
+                matched = True
+            elif name_lower and len(name_lower) > 2 and name_lower in search_text:
+                matched = True
+
+            if matched:
+                seen_tickers.add(ticker)
+                results.append({
+                    "ticker": ticker,
+                    "type": info.get("type", "unknown"),
+                    "name": info.get("name", ticker),
+                })
+
+    return results[:8]
 
 
 def score_sentiment(text: str) -> float:
@@ -320,7 +350,73 @@ def generate_news_slug(title: str) -> str:
     return hashlib.md5(title.strip().lower().encode()).hexdigest()[:12]
 
 
-def process_article(raw_article: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+_TOPIC_KEYWORDS = {
+    "crypto": [
+        "bitcoin", "btc", "ethereum", "eth ", "blockchain", "defi", "nft",
+        "altcoin", "stablecoin", "token", "mining pool", "hash rate",
+        "crypto", "satoshi", "web3", "dex", "cex", "airdrop",
+        "smart contract", "proof of stake", "proof of work",
+        "solana", "cardano", "xrp", "dogecoin", "litecoin",
+        "binance", "coinbase", "kraken", "okx", "bybit",
+    ],
+    "commodity": [
+        "crude oil", "brent", "wti", "barrel", "opec", "oil price",
+        "gold price", "silver price", "copper", "natural gas",
+        "commodity", " commodities", "futures contract", "spot price",
+        "drilling", "pipeline", "refinery", "sanctions oil",
+        "iron ore", "wheat", "soybean", "corn price",
+    ],
+    "forex": [
+        "forex", "currency pair", "exchange rate", "usd/jpy", "eur/usd",
+        "gbp/usd", "dollar index", "dxy", "central bank", "interest rate",
+        "monetary policy", "yen ", "sterling", "federal reserve",
+        "ecb ", "bank of japan", "rate hike", "rate cut",
+    ],
+    "stock": [
+        "stock market", "shares", "earnings", "revenue", "ipo ",
+        "s&p 500", "nasdaq", "dow jones", "index fund",
+        "hedge fund", "portfolio", "dividend", "market cap",
+        "bull market", "bear market", "valuation", "quarterly",
+        "shareholder", "equity", "mutual fund",
+    ],
+    "geopolitics": [
+        "war ", "conflict", "sanctions", "tariff", "trade war",
+        "nato", "military", "missile", "attack", "invasion",
+        "nuclear", "ceasefire", "peace talk", "embargo",
+        "geopolitical", "foreign policy", "diplomacy",
+    ],
+    "macro": [
+        "inflation", "cpi ", "gdp ", "unemployment", "jobs report",
+        "federal reserve", "treasury", "bond yield", "fiscal",
+        "recession", "stimulus", "quantitative", "money supply",
+    ],
+}
+
+
+def _classify_by_keywords(text: str) -> str:
+    """
+    Classify an article into a topic category by keyword density.
+
+    When no tickers are detected, we fall back to scanning the article text
+    for topic-specific keywords. The category with the most keyword hits wins.
+    This prevents general news from crypto RSS feeds being mislabeled as 'crypto'.
+
+    Priority: crypto > commodity > forex > stock > geopolitics > macro > markets
+    """
+    text_lower = text.lower()
+    scores = {}
+    for category, keywords in _TOPIC_KEYWORDS.items():
+        score = sum(1 for kw in keywords if kw in text_lower)
+        if score > 0:
+            scores[category] = score
+
+    if not scores:
+        return "markets"
+
+    return max(scores, key=scores.get)
+
+
+def process_article(raw_article: Dict[str, Any], discovered_tickers: Dict[str, Any] = None) -> Optional[Dict[str, Any]]:
     """
     Process a raw RSS article into our internal format.
 
@@ -334,19 +430,31 @@ def process_article(raw_article: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     summary = raw_article.get("summary", "")
     full_text = f"{title} {summary}"
 
-    tickers = extract_tickers(full_text)
+    tickers = extract_tickers(full_text, discovered_tickers)
     sentiment = score_sentiment(full_text)
 
     slug = generate_news_slug(title)
 
+    asset_types = list({t["type"] for t in tickers}) if tickers else []
+
+    CATEGORY_PRIORITY = ["crypto", "commodity", "forex", "stock", "etf"]
+    content_category = "markets"
+    for cat in CATEGORY_PRIORITY:
+        if cat in asset_types:
+            content_category = cat
+            break
+    if not asset_types:
+        content_category = _classify_by_keywords(full_text)
+        asset_types = ["general"]
+
     return {
         "id": slug,
         "title": title,
-        "summary": summary[:300] if summary else "",
+        "summary": summary,
         "link": raw_article.get("link", ""),
         "published": raw_article.get("published", ""),
         "source": raw_article.get("source", "Unknown"),
-        "category": raw_article.get("category", "markets"),
+        "category": content_category,
         "tickers": tickers,
         "sentiment_score": round(sentiment, 3),
         "sentiment_label": (
@@ -354,6 +462,6 @@ def process_article(raw_article: Dict[str, Any]) -> Optional[Dict[str, Any]]:
             else "bearish" if sentiment < -0.15
             else "neutral"
         ),
-        "asset_types": list({t["type"] for t in tickers}) if tickers else ["general"],
+        "asset_types": asset_types,
         "timestamp": raw_article.get("timestamp", ""),
     }

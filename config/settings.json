@@ -1,6 +1,6 @@
 {
   "zai": {
-    "api_key": "3c466fd16eb346a1a9feaa9c78569cb5.DYKlYfua8MXC7DTP",
+    "api_key": "YOUR_ZAI_API_KEY_HERE",
     "base_url": "https://api.z.ai/api/coding/paas/v4",
     "model": "glm-4.5-air",
     "max_tokens": 32768,

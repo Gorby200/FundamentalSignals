@@ -273,13 +273,14 @@ def gather_context(state: AnalystState) -> dict:
             sentiment = article.get("sentiment_score", 0)
             label = article.get("sentiment_label", "neutral").upper()
             source = article.get("source", "Unknown")
+            link = article.get("link", "")
             title = article.get("title", "")
             summary = article.get("summary", "")
             published = article.get("published", "")
 
             parts.append(
                 f"\n{i}. [{label}] {title}\n"
-                f"   Source: {source} | Tickers: {tickers_str or 'None detected'} "
+                f"   URL: {link or source} | Tickers: {tickers_str or 'None detected'} "
                 f"| Sentiment: {sentiment:+.2f}"
             )
             if published:
@@ -352,6 +353,17 @@ def llm_analyze(state: AnalystState) -> dict:
                     "5. ATR values are provided — use them for stop-loss/take-profit sizing.\n"
                     "6. Technical indicators in SECTION 2 are from real-time Binance data.\n"
                     "7. News summaries in SECTION 3 are complete — extract all relevant signals.\n\n"
+                    "TICKER DISCOVERY INSTRUCTION:\n"
+                    "8. Carefully read EVERY news article in SECTION 3 for mentioned companies, "
+                    "cryptocurrencies, commodities, indices, currencies, and ETFs.\n"
+                    "9. Many articles mention instruments by COMPANY NAME (e.g., 'MicroStrategy', "
+                    "'Robinhood', 'Block Inc') rather than ticker symbol.\n"
+                    "10. You MUST identify these and use proper ticker symbols in your output "
+                    "(e.g., MSTR, HOOD, SQ).\n"
+                    "11. Include ALL mentioned instruments — even those without price data — "
+                    "in tier_c_universe or watchlist with monitor_trigger conditions.\n"
+                    "12. Cross-reference: if news mentions 'semiconductor sector', identify "
+                    "NVDA, AMD, INTC, AVGO, TSM and include them in appropriate tiers.\n\n"
                     "Now analyze the following market data and generate ORACLE v2.1 signals "
                     "with the complete three-tier output schema "
                     "(tier_a_signals, tier_b_baskets, tier_c_universe):\n\n"

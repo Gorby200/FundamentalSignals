@@ -424,7 +424,7 @@ class SignalEngine:
                     "primary_catalyst": "News_Sentiment",
                     "reasoning": (
                         f"News sentiment: {sentiment:+.2f} "
-                        f"from '{article.get('title', '')[:80]}'"
+                        f"from '{article.get('title', '')}'"
                     ),
                     "key_factors": [
                         f"Source: {article.get('source', 'Unknown')}",
@@ -731,6 +731,84 @@ class SignalEngine:
 
         return det_signals
 
+    def _discover_tickers_from_oracle(self, oracle_output: Dict[str, Any]) -> None:
+        """
+        Extract tickers discovered by ORACLE LLM and merge into dynamic ticker map.
+
+        The ORACLE agent sees full article text and can identify instruments that
+        the keyword-based extractor (TICKER_MAP) missed — e.g., smaller companies,
+        international stocks, new crypto projects, or indirect references.
+
+        Architecture:
+          - ORACLE outputs tier_a/b/c signals, each with instrument.ticker
+          - We collect ALL unique tickers + instrument metadata
+          - Merge into state.discovered_tickers (survives across cycles)
+          - extract_tickers() in sentiment.py checks this map on next cycle
+
+        This creates a feedback loop:
+          ORACLE discovers tickers → stored in state → deterministic layer uses them
+        """
+        discovered = {}
+
+        for signal in oracle_output.get("tier_a_signals", []):
+            inst = signal.get("instrument", {})
+            ticker = inst.get("ticker", "")
+            if not ticker:
+                continue
+            discovered[ticker] = {
+                "ticker": ticker,
+                "type": inst.get("instrument_type", "unknown"),
+                "name": inst.get("name", ticker),
+                "source": "oracle_tier_a",
+            }
+
+        for basket in oracle_output.get("tier_b_baskets", []):
+            for inst in basket.get("basket_instruments", []):
+                ticker = inst.get("ticker", "")
+                if not ticker:
+                    continue
+                discovered[ticker] = {
+                    "ticker": ticker,
+                    "type": inst.get("instrument_type", "unknown"),
+                    "name": inst.get("name", ticker),
+                    "source": "oracle_tier_b",
+                }
+
+        for inst in oracle_output.get("tier_c_universe", []):
+            ticker = inst.get("ticker", "")
+            if not ticker:
+                continue
+            discovered[ticker] = {
+                "ticker": ticker,
+                "type": inst.get("instrument_type", "unknown"),
+                "name": inst.get("name", ticker),
+                "source": "oracle_tier_c",
+            }
+
+        for item in oracle_output.get("watchlist", []):
+            ticker = item.get("ticker", "")
+            if not ticker:
+                continue
+            discovered[ticker] = {
+                "ticker": ticker,
+                "type": item.get("type", "unknown"),
+                "name": ticker,
+                "source": "oracle_watchlist",
+            }
+
+        if not discovered:
+            return
+
+        existing = self.state.discovered_tickers
+        new_count = sum(1 for t in discovered if t not in existing)
+        existing.update(discovered)
+
+        if new_count > 0:
+            logger.info(
+                f"ORACLE ticker discovery: {new_count} new tickers found "
+                f"(total dynamic map: {len(existing)})"
+            )
+
     async def generate_oracle_signals(self, articles: List[Dict]) -> Dict[str, Any]:
         """
         LAYER 2: Generate ORACLE AI signals via LLM.
@@ -764,6 +842,7 @@ class SignalEngine:
 
         if oracle_output:
             self._last_oracle_output = oracle_output
+            self._discover_tickers_from_oracle(oracle_output)
 
         return oracle_output
 

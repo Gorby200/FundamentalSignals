@@ -61,7 +61,7 @@ class AppState:
 
         self.lock = threading.Lock()
 
-        # ORACLE news queue — track which articles have been sent to LLM
-        # so the same articles are not re-analyzed on every cycle
+        self.discovered_tickers: Dict[str, Any] = {}
+
         self.oracle_processed_hashes: set = set()
         self.oracle_batch_counter: int = 0

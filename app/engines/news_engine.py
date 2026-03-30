@@ -84,6 +84,7 @@ async def poll_feed(
     seen_slugs: set,
     max_articles: int = 15,
     max_age_hours: int = 4,
+    discovered_tickers: Dict[str, Any] = None,
 ) -> List[Dict[str, Any]]:
     url = feed_config["url"]
     timeout = feed_config.get("timeout", 20)
@@ -116,7 +117,7 @@ async def poll_feed(
                 summary = entry.description
 
             summary = re.sub(r'<[^>]+>', ' ', summary).strip()
-            summary = re.sub(r'\s+', ' ', summary)[:500]
+            summary = re.sub(r'\s+', ' ', summary)
 
             published = getattr(entry, "published", "") or getattr(entry, "updated", "")
             link = getattr(entry, "link", "")
@@ -132,7 +133,7 @@ async def poll_feed(
                 "timestamp": datetime.now().isoformat(),
             }
 
-            processed = process_article(raw)
+            processed = process_article(raw, discovered_tickers)
             if processed:
                 new_articles.append(processed)
                 seen_slugs.add(slug)
@@ -149,6 +150,7 @@ async def poll_feed(
 async def poll_all_feeds(
     seen_slugs: set,
     poll_interval: int = 60,
+    discovered_tickers: Dict[str, Any] = None,
 ) -> List[Dict[str, Any]]:
     _ensure_crypto_feeds_loaded()
 
@@ -160,7 +162,8 @@ async def poll_all_feeds(
 
         async def bounded_poll(feed):
             async with sem:
-                return await poll_feed(client, feed, seen_slugs)
+                return await poll_feed(client, feed, seen_slugs,
+                                       discovered_tickers=discovered_tickers)
 
         tasks = [bounded_poll(feed) for feed in all_feeds]
         results = await asyncio.gather(*tasks, return_exceptions=True)

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a78bfa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/%3E%3C/svg%3E">
 <title>FundamentalSignals — ORACLE v2.1 Live Trading Signals</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&family=Space+Mono:wght@400;700&display=swap');
@@ -1551,8 +1552,8 @@ class FundamentalSignalsClient {
         var icon = section === 'signals' ? '\u{1F4CA}' : '\u{1F4F0}';
         var title = section === 'signals' ? 'No Signals Yet' : 'No News Yet';
         var subtitle = section === 'signals'
-            ? 'Deterministic signals appear every 30s. ORACLE AI analysis runs every 10 min.'
-            : 'RSS feeds are polled every 10 min. News will appear here as they arrive.';
+            ? 'Signals are generated automatically. They will appear here once ready.'
+            : 'News feeds are polled in the background. Articles will appear as they arrive.';
         return '<div class="empty-state">' +
             '<div class="empty-icon">' + icon + '</div>' +
             '<h3>' + title + '</h3>' +
