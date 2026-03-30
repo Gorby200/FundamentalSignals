@@ -822,8 +822,11 @@ body {
  * ===========================================================================*/
 
 // Dynamic URL configuration — derives API and WS endpoints from current page URL
-var API_BASE = window.location.origin;
-var WS_PROTOCOL = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+// Fallback: when opened as file:// (double-click), default to localhost:8000
+var _isFile = window.location.protocol === 'file:';
+var API_BASE = _isFile ? 'http://localhost:8000' : window.location.origin;
+var WS_PROTOCOL = (_isFile || window.location.protocol === 'http:')
+    ? 'ws:' : 'wss:';
 
 function escapeHtml(str) {
     if (!str) return '';
@@ -942,8 +945,9 @@ class FundamentalSignalsClient {
 
     connect() {
         var self = this;
-        var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        var wsUrl = protocol + '//' + window.location.host + '/ws';
+        var protocol = WS_PROTOCOL;
+        var host = _isFile ? 'localhost:8000' : window.location.host;
+        var wsUrl = protocol + '//' + host + '/ws';
 
         try {
             this.ws = new WebSocket(wsUrl);

@@ -68,11 +68,10 @@ All tuneable parameters live in a single `config/settings.json` — zero hardcod
 ┌──────────────────────────────────────────────────────────────┐
 │                   FastAPI + WebSocket                         │
 │                                                              │
+│  /                  — dashboard UI (static/index.html)        │
 │  /api/health        — system health & stats                  │
 │  /api/state         — full JSON state dump                   │
 │  /ws                — real-time WebSocket broadcast (5s)      │
-│                                                              │
-│  prototype_frontend.html — dashboard (opens in browser)      │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -125,7 +124,7 @@ Thresholds are configurable via `oracle.tier_a_threshold` / `oracle.tier_b_thres
 
 ```bash
 # Clone the repository
-git clone <repo-url>
+git clone https://github.com/Gorby200/FundamentalSignals.git
 cd Prototype
 
 # Create virtual environment
@@ -176,13 +175,17 @@ python run.py
 
 Server starts at `http://localhost:8000`.
 
-- Dashboard: open `prototype_frontend.html` in a browser (auto-connects via WebSocket)
-- Health: `http://localhost:8000/api/health`
-- State: `http://localhost:8000/api/state`
+- **Dashboard**: open `http://localhost:8000/` in a browser — served by FastAPI
+- **Health**: `http://localhost:8000/api/health`
+- **State**: `http://localhost:8000/api/state`
 
 ---
 
 ## API Endpoints
+
+### `GET /`
+
+Serves the ORACLE v2.1 dashboard UI from `static/index.html`.
 
 ### `GET /api/health`
 
@@ -261,15 +264,14 @@ Prototype/
 ├── prompts/
 │   └── FundamentalSignals_SuperPrompt_v2.md   # ORACLE v2.1 system prompt
 │
+├── static/
+│   └── index.html                  # Dashboard UI (served by FastAPI at /)
+│
 ├── logs/
-│   ├── .gitkeep
-│   ├── oracle.log                  # General system log
-│   └── llm_feed.log                # Full LLM I/O log (context sent + response)
+│   └── .gitkeep
 │
 ├── verified_feeds.json             # Verified RSS feed URLs
-├── test_feeds.py                   # Utility: verify RSS feed connectivity
-└── static/
-    └── index.html                  # Dashboard UI (v2.1, served by FastAPI at /)
+└── test_feeds.py                   # Utility: verify RSS feed connectivity
 ```
 
 ---
@@ -284,7 +286,7 @@ Prototype/
 | Technical Analysis | NumPy | SMA, EMA, RSI, MACD, BB, ATR |
 | AI Agent | LangGraph + LangChain | StateGraph pipeline for LLM |
 | LLM | z.ai GLM-4.5-air | Signal analysis, regime detection |
-| Dashboard | Vanilla HTML/CSS/JS | WebSocket client, no build step |
+| Dashboard | Vanilla HTML/CSS/JS | Served by FastAPI, no build step |
 
 ---
 
@@ -322,7 +324,7 @@ Each signal includes:
 
 Stop-loss and take-profit levels are computed using ATR (Average True Range):
 
-- **ATR source priority**: 24h high/low range (primary) → candle ATR-14 → avg True Range → % fallback
+- **ATR source priority**: 24h high/low range → candle ATR-14 → avg True Range → % fallback
 - **ATR from 24h range**: `(high_24h - low_24h) / 3.5` with sanity clamp (0.3%–8% of price)
 - **Risk**: `ATR × atr_sl_multiplier` (default 1.5)
 - **Stop-loss**: `entry ± risk`
@@ -375,19 +377,19 @@ Internet → [nginx/Caddy reverse proxy] → [uvicorn FastAPI :8000]
                                               └── /api/state   → state dump
 ```
 
-### Quick Deploy (VPS / Docker)
+### Quick Deploy (VPS)
 
 **Option 1: Direct on VPS**
 
 ```bash
 # On your server
-git clone <repo-url>
+git clone https://github.com/Gorby200/FundamentalSignals.git
 cd Prototype
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# Edit config
-nano config/settings.json  # Add your ZAI API key
+# Edit config — add your ZAI API key
+nano config/settings.json
 
 # Run with uvicorn (production)
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 1
