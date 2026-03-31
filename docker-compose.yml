@@ -1,0 +1,18 @@
+services:
+  oracle:
+    build: .
+    container_name: oracle-v2
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+      - ./verified_feeds.json:/app/verified_feeds.json
+    environment:
+      - TZ=UTC
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
